@@ -4,8 +4,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Individual {
-  private static int            id;
+  public static int             count;
+  private int                   id;
   private String                name;
+  private String                gender;
   private LocalDate             birth;
   private LocalDate             death;
   private Individual            father;
@@ -16,13 +18,15 @@ public class Individual {
    * 
    */
   public Individual() {
-    Individual.id++;
+    Individual.count++;
+    id = count;
     setName("");
+    setGender("");
     setBirth(null);
     setDeath(null);
     setFather(null);
     setMother(null);
-    children = null;
+    children = new ArrayList<Individual>();
   }
   
   /**
@@ -30,19 +34,29 @@ public class Individual {
    * @param n
    * @param dob
    */
-  public Individual(String n, String dob) {
-    Individual.id++;
+  public Individual(String n, String g, String dob) {
+    Individual.count++;
+    id = count;
     int birth_year  = Integer.parseInt(dob.split("-")[0]);
     int birth_month = Integer.parseInt(dob.split("-")[1]);
     int birth_day   = Integer.parseInt(dob.split("-")[2]);
     setName(n);
+    setGender(g);
     setBirth(LocalDate.of(birth_year, birth_month, birth_day));
     setDeath(null);
     setFather(null);
     setMother(null);
-    children = null;
+    children = new ArrayList<Individual>();
   }
 
+  /**
+   * 
+   * @return
+   */
+  public int getId() {
+    return id;
+  }
+  
   /**
    * 
    * @return
@@ -57,6 +71,20 @@ public class Individual {
    */
   public void setName(String name) {
     this.name = name;
+  }
+
+  /**
+   * @return the gender
+   */
+  public String getGender() {
+    return gender;
+  }
+
+  /**
+   * @param gender the gender to set
+   */
+  public void setGender(String gender) {
+    this.gender = gender;
   }
 
   /**
@@ -130,31 +158,48 @@ public class Individual {
   public ArrayList<Individual> getChildren() {
     return children;
   }
-
-  /**
-   * 
-   * @param children the children to set
-   */
-  public void setChildren(ArrayList<Individual> children) {
-    this.children = children;
-  }
   
   /**
    * 
    * @param child
    */
   public void addChild(Individual child) {
-    this.children.add(child);
+    if (child != null) {
+      this.children.add(child);
+      
+    }
+  }
+  
+  public void removeChild(Individual child) {
+    if (child != null) {
+      // TODO if child is one of the children of the caller, then remove parent-child relationship.
+    }
   }
   
   /**
-   * 
+   * If caller has the specified child. 
    * @param child
    * @return
    */
-  public boolean isChild(Individual child) {
-    if ((this == child.father) || (this == child.mother)) {
-      return true;
+  public boolean hasChild(Individual child) {
+    if (child != null) {
+      if ((this == child.father) || (this == child.mother)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  /**
+   * If caller is a child of specified parent.
+   * @param parent
+   * @return
+   */
+  public boolean isChildOf(Individual parent) {
+    if (parent != null) {
+      if (parent.hasChild(this)) {
+        return true;
+      }
     }
     return false;
   }
