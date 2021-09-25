@@ -13,19 +13,15 @@ public class Family {
    * @param args
    */
   public static void main(String[] args) {
-    Individual p01 = new Individual("Dad", "M", "1975-01-01");
-    Individual p02 = new Individual("Mom", "F", "1980-02-10");
-    Individual p03 = new Individual("Bro", "M", "2010-03-20");
-    Individual p04 = new Individual("Sis", "F", "2015-04-30");
-
+    Individual p01 = new Individual("Dad", Gender.M, "1975-01-01");
+    Individual p02 = new Individual("Mom", Gender.F, "1980-02-10");
+    Individual p03 = new Individual("Bro", Gender.M, "2010-03-20");
+    Individual p04 = new Individual("Sis", Gender.F, "2015-04-30");
+    
     p01.addChild(p03);
     p01.addChild(p04);
     p02.addChild(p03);
     p02.addChild(p04);
-    p03.setFather(p01);
-    p03.setMother(p02);
-    p04.setFather(p01);
-    p04.setMother(p02);
 
     Individual fm[] = new Individual[] {p01, p02, p03, p04};
     System.out.println("# | Name | G | DoB        | DoD | Parents  | Children");

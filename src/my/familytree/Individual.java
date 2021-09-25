@@ -1,5 +1,12 @@
+/**
+ * 
+ */
 package my.familytree;
 
+/**
+ * @author zryne
+ *
+ */
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -7,7 +14,7 @@ public class Individual {
   public static int             count;
   private int                   id;
   private String                name;
-  private String                gender;
+  private Gender                gender;
   private LocalDate             birth;
   private LocalDate             death;
   private Individual            father;
@@ -15,13 +22,13 @@ public class Individual {
   private ArrayList<Individual> children;
   
   /**
-   * 
+   * Default constructor
    */
   public Individual() {
-    Individual.count++;
+    count++;
     id = count;
     setName("");
-    setGender("");
+    setGender(Gender.U);
     setBirth(null);
     setDeath(null);
     setFather(null);
@@ -30,12 +37,12 @@ public class Individual {
   }
   
   /**
-   * 
-   * @param n
-   * @param dob
+   * Constructor with name, gender and date-of-birth.
+   * @param n   name of the individual
+   * @param dob date of birth of the individual
    */
-  public Individual(String n, String g, String dob) {
-    Individual.count++;
+  public Individual(String n, Gender g, String dob) {
+    count++;
     id = count;
     int birth_year  = Integer.parseInt(dob.split("-")[0]);
     int birth_month = Integer.parseInt(dob.split("-")[1]);
@@ -48,25 +55,25 @@ public class Individual {
     setMother(null);
     children = new ArrayList<Individual>();
   }
-
+  
   /**
-   * 
-   * @return
+   * Get unique individual identifier.
+   * @return the id
    */
   public int getId() {
     return id;
   }
   
   /**
-   * 
-   * @return
+   * Get the name. 
+   * @return the name
    */
   public String getName() {
     return name;
   }
 
   /**
-   * 
+   * Set the name.
    * @param name
    */
   public void setName(String name) {
@@ -74,37 +81,39 @@ public class Individual {
   }
 
   /**
+   * Get the gender.
    * @return the gender
    */
-  public String getGender() {
+  public Gender getGender() {
     return gender;
   }
 
   /**
-   * @param gender the gender to set
+   * Set the gender.
+   * @param gender the gender to assign
    */
-  public void setGender(String gender) {
+  public void setGender(Gender gender) {
     this.gender = gender;
   }
 
   /**
-   * 
-   * @return the birth
+   * Get the date of birth. 
+   * @return the birth date
    */
   public LocalDate getBirth() {
     return birth;
   }
 
   /**
-   * 
-   * @param birth the birth to set
+   * Set the date of birth. 
+   * @param birth the birth date to assign
    */
   public void setBirth(LocalDate birth) {
     this.birth = birth;
   }
 
   /**
-   * 
+   * Get the date of death. 
    * @return the death
    */
   public LocalDate getDeath() {
@@ -112,15 +121,15 @@ public class Individual {
   }
 
   /**
-   * 
-   * @param death the death to set
+   * Set the date of death. 
+   * @param death the death date to assign
    */
   public void setDeath(LocalDate death) {
     this.death = death;
   }
 
   /**
-   * 
+   * Get the father. 
    * @return the father
    */
   public Individual getFather() {
@@ -128,15 +137,15 @@ public class Individual {
   }
 
   /**
-   * 
-   * @param father the father to set
+   * Set as father. 
+   * @param father the father to assign
    */
   public void setFather(Individual father) {
     this.father = father;
   }
 
   /**
-   * 
+   * Get the mother. 
    * @return the mother
    */
   public Individual getMother() {
@@ -144,32 +153,42 @@ public class Individual {
   }
 
   /**
-   * 
-   * @param mother the mother to set
+   * Set as mother. 
+   * @param mother the mother to assign
    */
   public void setMother(Individual mother) {
     this.mother = mother;
   }
 
   /**
-   * 
-   * @return the children
+   * Get the children list.
+   * @return list of children
    */
   public ArrayList<Individual> getChildren() {
     return children;
   }
   
   /**
-   * 
-   * @param child
+   * Set as child.
+   * @param child the individual to add as child
    */
   public void addChild(Individual child) {
     if (child != null) {
-      this.children.add(child);
+      children.add(child);
       
+      // Also, add parent relation from child
+      if (this.gender == Gender.M) {
+        child.setFather(this);
+      } else {
+        child.setMother(this);
+      }
     }
   }
   
+  /**
+   * Remove from children list.
+   * @param child the individual to remove from children
+   */
   public void removeChild(Individual child) {
     if (child != null) {
       // TODO if child is one of the children of the caller, then remove parent-child relationship.
@@ -177,9 +196,17 @@ public class Individual {
   }
   
   /**
+   * Get the number of children.
+   * @return number of children
+   */
+  public int childrenCount() {
+    return children.size();
+  }
+  
+  /**
    * If caller has the specified child. 
-   * @param child
-   * @return
+   * @param child The individual to check as offspring
+   * @return true/false
    */
   public boolean hasChild(Individual child) {
     if (child != null) {
@@ -192,8 +219,8 @@ public class Individual {
   
   /**
    * If caller is a child of specified parent.
-   * @param parent
-   * @return
+   * @param parent The individual to check as parent
+   * @return true/false
    */
   public boolean isChildOf(Individual parent) {
     if (parent != null) {
