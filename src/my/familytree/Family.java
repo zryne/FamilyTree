@@ -39,6 +39,23 @@ public class Family {
     }
         
     System.out.println("Family members = " + Individual.count);
+    
+    p01.removeChild(p04);
+    
+    System.out.println("# | Name | G | DoB        | DoD | Parents  | Children");
+    System.out.println("--+------+---+------------+-----+----------+---------");
+    for(Individual i : fm) {
+      System.out.println(  i.getId() + " | "
+                         + i.getName() + "  | "
+                         + i.getGender() + " | "
+                         + ((i.getBirth() == null) ? "N/A" : i.getBirth().toString()) + " | "
+                         + ((i.getDeath() == null) ? "N/A" : i.getDeath().toString()) + " | "
+                         + ((i.getFather() == null) ? "N/A" : i.getFather().getName()) + ", "
+                         + ((i.getMother() == null) ? "N/A" : i.getMother().getName()) + " | "
+                         + ((i.getChildren().size() == 0) ? "None" : i.getChildren().size()) 
+                        );
+    }
+        
+    System.out.println("Family members = " + Individual.count);
   }
-
 }

@@ -174,14 +174,27 @@ public class Individual {
    */
   public void addChild(Individual child) {
     if (child != null) {
-      children.add(child);
+      if (!this.hasChild(child)) {
+        children.add(child);
+      }
       
-      // Also, add parent relation from child
+      // Add parent relation from child
       if (this.gender == Gender.M) {
         child.setFather(this);
-      } else {
+      } else if (this.gender == Gender.F) {
         child.setMother(this);
+      } else {
       }
+    }
+  }
+  
+  /**
+   * Set as parent.
+   * @param parent the individual to add as parent
+   */
+  public void addParent(Individual parent) {
+    if (parent != null) {
+      parent.addChild(this);
     }
   }
   
@@ -192,6 +205,25 @@ public class Individual {
   public void removeChild(Individual child) {
     if (child != null) {
       // TODO if child is one of the children of the caller, then remove parent-child relationship.
+      ArrayList<Individual> temp_list = this.getChildren();
+      for (int i = 0; i < temp_list.size(); i++) {
+        if (temp_list.get(i) == child) {
+          temp_list.remove(i);
+          child.removeParent(this);
+          break;
+        }
+      }
+    }
+  }
+  
+  public void removeParent(Individual parent) {
+    if (parent != null) {
+      if (parent.gender == Gender.M ) {
+        this.setFather(null);
+      } else if (parent.gender == Gender.F ) {
+        this.setMother(null);
+      } else {
+      }
     }
   }
   
