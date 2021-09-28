@@ -204,7 +204,6 @@ public class Individual {
    */
   public void removeChild(Individual child) {
     if (child != null) {
-      // TODO if child is one of the children of the caller, then remove parent-child relationship.
       ArrayList<Individual> temp_list = this.getChildren();
       for (int i = 0; i < temp_list.size(); i++) {
         if (temp_list.get(i) == child) {
@@ -216,6 +215,10 @@ public class Individual {
     }
   }
   
+  /**
+   * Remove parent from child.
+   * @param parent the individual to remove from child's parent
+   */
   public void removeParent(Individual parent) {
     if (parent != null) {
       if (parent.gender == Gender.M ) {
